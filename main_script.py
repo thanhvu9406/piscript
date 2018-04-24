@@ -5,18 +5,16 @@ import os
 from datetime import datetime
 module_path = os.path.dirname(os.path.realpath(__file__))
 log_path = module_path + '/piscript.log'
-import logging
-# logging.basicConfig(filename='piscript.log', level=logging.INFO)
 
-logger = logging.getLogger('piscript')
-hdlr = logging.FileHandler(log_path)
+import logging
+logging.basicConfig(filename=log_path, level=logging.INFO)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 
 print requests.__version__
 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 def send_to_server(location, url='https://www.dhamedic.vn/post/hr_attendance', datas={}):
-    logger.info('Send to %s datas: %s'%(str(url), str(len(datas))))
+    logging.info('Send to %s datas: %s'%(str(url), str(len(datas))))
     datas_str = json.dumps({
         'attendances': datas,
         'location': location
@@ -25,7 +23,7 @@ def send_to_server(location, url='https://www.dhamedic.vn/post/hr_attendance', d
     return r
 
 def get_attendance(zk):
-    logger.info('Get Attendance')
+    logging.info('Get Attendance')
 
     res = zk.connect()
     error = ''
@@ -50,7 +48,7 @@ if __name__ == "__main__":
     except:
         pass
 
-    logger.info('%s Started'%now)
+    logging.info('%s Started'%now)
     arrgs = {}
     config_path = os.path.dirname(os.path.realpath(__file__)) + '/config.conf'
     with open(config_path) as f:
